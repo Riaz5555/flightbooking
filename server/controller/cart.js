@@ -16,3 +16,31 @@ module.exports.getItems = (req, res) => {
     .then((info) => {
       var output = [];
       let userId = req.params.userId;
+      for (let i = 0; i < info.length; i++) {
+        let itemId = info[i].itemId;
+
+        if (info[i].type === "hotel") {
+          const res = axios
+            .get(baseURL + `/hotels/get/hotelBookings/` + userId)
+            .then((r) => {
+              r = r.data;
+              for (let j = 0; j < r.length; j++) {
+                if (r[j]._id === itemId) {
+                  let item = {};
+
+                  item["_id"] = info[i]._id;
+                  item["type"] = info[i].type;
+                  item["ItemId"] = info[i].itemId;
+                  item["userId"] = info[i].userId;
+                  item["price"] = info[i].price;
+
+                  item["hotelName"] = r[j].hotelName;
+                  item["numberOfRooms"] = r[j].numberOfRooms;
+                  item["startDate"] = r[j].startDate;
+                  item["endDate"] = r[j].endDate;
+                  item["location"] = r[j].location;
+
+                  output.push(item);
+                }
+              }
+            });
