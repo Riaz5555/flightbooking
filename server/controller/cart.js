@@ -44,3 +44,36 @@ module.exports.getItems = (req, res) => {
                 }
               }
             });
+        } else if (info[i].type === "flight") {
+            const res = axios
+              .get(baseURL + `/flightbookings/` + userId)
+              .then((r) => {
+                r = r.data;
+                for (let j = 0; j < r.length; j++) {
+                  if (r[j]._id === itemId) {
+                    let item = {};
+  
+                    item["_id"] = info[i]._id;
+                    item["type"] = info[i].type;
+                    item["ItemId"] = info[i].itemId;
+                    item["userId"] = info[i].userId;
+                    item["price"] = info[i].price;
+  
+                    item["flightCompany"] = r[j].flightCompany;
+                    item["source"] = r[j].source;
+                    item["destination"] = r[j].destination;
+                    item["arrivalTime"] = r[j].arrivalTime;
+                    item["departureTime"] = r[j].departureTime;
+  
+                    output.push(item);
+                  }
+                }
+              });
+          } else if (info[i].type === "event") {
+            const res = axios
+              .get(baseURL + `/events/booking/fetch/` + userId)
+              .then((r) => {
+                r = r.data;
+                for (let j = 0; j < r.length; j++) {
+                  if (r[j]._id === itemId) {
+                    let item = {};
