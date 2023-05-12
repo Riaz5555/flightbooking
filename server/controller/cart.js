@@ -77,3 +77,45 @@ module.exports.getItems = (req, res) => {
                 for (let j = 0; j < r.length; j++) {
                   if (r[j]._id === itemId) {
                     let item = {};
+                    let item = {};
+
+                  item["_id"] = info[i]._id;
+                  item["type"] = info[i].type;
+                  item["ItemId"] = info[i].itemId;
+                  item["userId"] = info[i].userId;
+                  item["price"] = info[i].price;
+
+                  item["title"] = r[j].title;
+                  item["seat"] = r[j].seat;
+                  item["date"] = r[j].date;
+                  item["city"] = r[j].city;
+
+                  output.push(item);
+                }
+              }
+            });
+        } else if (info[i].type === "tour") {
+          const res = axios
+            .get(baseURL + `/tours/booking/fetch/` + userId)
+            .then((r) => {
+              r = r.data;
+              for (let j = 0; j < r.length; j++) {
+                if (r[j]._id === itemId) {
+                  let item = {};
+
+                  item["_id"] = info[i]._id;
+                  item["type"] = info[i].type;
+                  item["ItemId"] = info[i].itemId;
+                  item["userId"] = info[i].userId;
+                  item["price"] = info[i].price;
+
+                  item["seat"] = r[j].seat;
+                  item["destination"] = r[j].destination;
+                  item["date"] = r[j].date;
+
+                  output.push(item);
+                }
+              }
+            });
+        }
+      }
